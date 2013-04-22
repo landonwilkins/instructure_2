@@ -52,12 +52,10 @@ class CommentsController < ApplicationController
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.new(params[:comment])
-    respond_to do |format|
-      if @comment.save
-        redirect_to @post
-      else
-        render action: "new"
-      end
+    if @comment.save
+      redirect_to @post
+    else
+      render action: "new"
     end
   end
 
