@@ -1,13 +1,14 @@
 class CommentsController < ApplicationController
-  before_action :get_post
-
-  def get_post
-    @post = Post.find(params[:post_id])
-  end
+  #before_action :get_post
+  #
+  #def get_post
+  #  @post = Post.find(params[:post_id])
+  #end
 
   # GET /comments
   # GET /comments.json
   def index
+    @post = Post.find(params[:post_id])
     @comments = @post.comments.all
 
     respond_to do |format|
@@ -19,6 +20,7 @@ class CommentsController < ApplicationController
   # GET /comments/1
   # GET /comments/1.json
   def show
+    @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
 
     respond_to do |format|
@@ -30,7 +32,8 @@ class CommentsController < ApplicationController
   # GET /comments/new
   # GET /comments/new.json
   def new
-    @comment = @post.comment.new
+    @post = Post.find(params[:post_id])
+    @comment = Comment.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,17 +43,18 @@ class CommentsController < ApplicationController
 
   # GET /comments/1/edit
   def edit
+    @post = Post.find(params[:post_id])
     @comment = Comment.find(params[:id])
   end
 
   # POST /comments
   # POST /comments.json
   def create
+    @post = Post.find(params[:post_id])
     @comment = @post.comments.new(params[:comment])
-
     respond_to do |format|
       if @comment.save
-        redirect_to [@post, @comment]
+        redirect_to @post
       else
         render action: "new"
       end
@@ -60,6 +64,7 @@ class CommentsController < ApplicationController
   # PUT /comments/1
   # PUT /comments/1.json
   def update
+    @post = Post.find(params[:post_id])
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
@@ -76,6 +81,7 @@ class CommentsController < ApplicationController
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
+    @post = Post.find(params[:post_id])
     @comment = Comment.find(params[:id])
     @comment.destroy
 
