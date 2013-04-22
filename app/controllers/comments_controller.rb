@@ -1,8 +1,14 @@
 class CommentsController < ApplicationController
+  before_action :get_post
+
+  def get_post
+    @post = Post.find(params[:post_id])
+  end
+
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+    @comments = @post.comments.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +19,7 @@ class CommentsController < ApplicationController
   # GET /comments/1
   # GET /comments/1.json
   def show
-    @comment = Comment.find(params[:id])
+    @comment = @post.comments.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,7 +30,7 @@ class CommentsController < ApplicationController
   # GET /comments/new
   # GET /comments/new.json
   def new
-    @comment = Comment.new
+    @comment = @post.comment.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,15 +46,13 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(params[:comment])
+    @comment = @post.comments.new(params[:comment])
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
-        format.json { render json: @comment, status: :created, location: @comment }
+        redirect_to [@post, @comment]
       else
-        format.html { render action: "new" }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        render action: "new"
       end
     end
   end

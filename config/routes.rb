@@ -1,11 +1,13 @@
 WimpyBlog::Application.routes.draw do
-  resources :comments
+
 
 
   resources :users
 
 
-  resources :posts
+  resources :posts do
+    resources :comments
+  end
 
 
   root :to => 'posts#index'
